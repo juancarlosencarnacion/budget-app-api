@@ -1,4 +1,4 @@
-package com.devencarnacion.budget.enums;
+package com.devencarnacion.budget.enums.category;
 
 public enum CategoryType {
     FIXED,

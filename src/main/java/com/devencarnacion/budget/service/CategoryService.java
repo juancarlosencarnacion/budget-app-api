@@ -10,7 +10,7 @@ public interface CategoryService {
 
     CategoryResponseDTO create(CategoryCreateRequestDTO request);
 
-    List<CategoryResponseDTO> getAllCategories();
+    List<CategoryResponseDTO> getAllForCurrentUser();
 
     List<CategoryResponseDTO> getCategoriesByUserId(Long userId);
 

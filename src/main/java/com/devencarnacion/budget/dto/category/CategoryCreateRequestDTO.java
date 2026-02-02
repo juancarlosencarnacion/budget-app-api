@@ -2,7 +2,7 @@ package com.devencarnacion.budget.dto.category;
 
 import java.math.BigDecimal;
 
-import com.devencarnacion.budget.enums.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +24,6 @@ public class CategoryCreateRequestDTO {
     @NotNull(message = "Monthly budget is required")
     private BigDecimal monthlyBudget;
     
-    @NotNull(message = "User id is required")
-    private Long userId;
+    // @NotNull(message = "User id is required")
+    // private Long userId;
 }

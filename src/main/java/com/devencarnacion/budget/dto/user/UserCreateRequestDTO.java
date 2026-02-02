@@ -1,7 +1,11 @@
 package com.devencarnacion.budget.dto.user;
 
+import com.devencarnacion.budget.enums.user.Role;
+
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +26,14 @@ public class UserCreateRequestDTO {
     @NotBlank(message = "Lastname is required")
     private String lastname;
 
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "Username is required")
     @Email(message = "Invalid email format")
-    private String email;
+    private String username;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+
+    @NotNull(message = "Role is required")
+    private Role role;
 }

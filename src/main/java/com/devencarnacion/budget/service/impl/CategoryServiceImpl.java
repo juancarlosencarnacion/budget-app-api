@@ -9,9 +9,11 @@ import com.devencarnacion.budget.dto.category.CategoryResponseDTO;
 import com.devencarnacion.budget.dto.category.CategoryUpdateRequestDTO;
 import com.devencarnacion.budget.mapper.CategoryMapper;
 import com.devencarnacion.budget.model.Category;
+import com.devencarnacion.budget.model.User;
 import com.devencarnacion.budget.repository.CategoryRepository;
-import com.devencarnacion.budget.repository.UserRepository;
+// import com.devencarnacion.budget.repository.UserRepository;
 import com.devencarnacion.budget.service.CategoryService;
+import com.devencarnacion.budget.util.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,22 +22,27 @@ import lombok.RequiredArgsConstructor;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
+    // private final UserRepository userRepository;
 
     private final CategoryMapper categoryMapper;
+
+    private final SecurityUtils securityUtils = null;
 
     @Override
     public CategoryResponseDTO create(CategoryCreateRequestDTO request) {
         Category newCategory = categoryMapper.toEntity(request);
 
-        newCategory.setUser(userRepository.getReferenceById(request.getUserId()));
+        // newCategory.setUser(userRepository.getReferenceById(request.getUserId()));
+        newCategory.setUser(securityUtils.getCurrentUser());
 
         return categoryMapper.toResponse(categoryRepository.save(newCategory));
     }
 
     @Override
-    public List<CategoryResponseDTO> getAllCategories() {
-        return categoryRepository.findAll()
+    public List<CategoryResponseDTO> getAllForCurrentUser() {
+        User user = securityUtils.getCurrentUser();
+
+        return categoryRepository.findByUser(user)
                 .stream()
                 .map(categoryMapper::toResponse)
                 .toList();

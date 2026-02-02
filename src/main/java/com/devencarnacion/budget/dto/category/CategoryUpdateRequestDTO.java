@@ -2,7 +2,7 @@ package com.devencarnacion.budget.dto.category;
 
 import java.math.BigDecimal;
 
-import com.devencarnacion.budget.enums.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

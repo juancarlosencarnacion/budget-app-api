@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.devencarnacion.budget.enums.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

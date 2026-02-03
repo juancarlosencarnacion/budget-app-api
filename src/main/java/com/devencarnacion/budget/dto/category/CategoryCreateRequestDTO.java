@@ -19,11 +19,9 @@ public class CategoryCreateRequestDTO {
     @NotBlank(message = "Name is required")
     private String name;
 
+    @NotNull(message = "Category type is required")
     private CategoryType categoryType;
     
     @NotNull(message = "Monthly budget is required")
     private BigDecimal monthlyBudget;
-    
-    // @NotNull(message = "User id is required")
-    // private Long userId;
 }

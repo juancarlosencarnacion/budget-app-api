@@ -31,6 +31,6 @@ public class ExpenseCreateRequestDTO {
     private Long categoryId;
 
     // Need to get this id from logged user
-    @NotNull(message = "User id is required")
-    private Long userId;
+    // @NotNull(message = "User id is required")
+    // private Long userId;
 }

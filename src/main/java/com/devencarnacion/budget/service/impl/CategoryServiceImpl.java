@@ -26,13 +26,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
-    private final SecurityUtils securityUtils = null;
+    private final SecurityUtils securityUtils;
 
     @Override
     public CategoryResponseDTO create(CategoryCreateRequestDTO request) {
         Category newCategory = categoryMapper.toEntity(request);
 
-        // newCategory.setUser(userRepository.getReferenceById(request.getUserId()));
         newCategory.setUser(securityUtils.getCurrentUser());
 
         return categoryMapper.toResponse(categoryRepository.save(newCategory));
@@ -42,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryResponseDTO> getAllForCurrentUser() {
         User user = securityUtils.getCurrentUser();
 
-        return categoryRepository.findByUser(user)
+        return categoryRepository.findByUserId(user.getId())
                 .stream()
                 .map(categoryMapper::toResponse)
                 .toList();
@@ -50,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponseDTO> getCategoriesByUserId(Long userId) {
-        return categoryRepository.findCategoriesByUserId(userId)
+        return categoryRepository.findByUserId(userId)
                 .stream()
                 .map(categoryMapper::toResponse)
                 .toList();
@@ -59,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDTO getCategoryById(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
 
         return categoryMapper.toResponse(category);
     }
@@ -67,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDTO update(Long categoryId, CategoryUpdateRequestDTO request) {
         Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
 
         categoryMapper.updateEntityFromDto(request, category);
 

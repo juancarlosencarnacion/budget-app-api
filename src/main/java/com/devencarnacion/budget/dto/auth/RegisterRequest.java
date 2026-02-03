@@ -14,7 +14,7 @@ import lombok.Setter;
 public class RegisterRequest {
     String username;
     String password;
-    String firstname;
+    String firstname; 
     String lastname;
     
 }

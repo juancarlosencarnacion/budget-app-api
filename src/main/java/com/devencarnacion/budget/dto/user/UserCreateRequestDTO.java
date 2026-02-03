@@ -2,7 +2,6 @@ package com.devencarnacion.budget.dto.user;
 
 import com.devencarnacion.budget.enums.user.Role;
 
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

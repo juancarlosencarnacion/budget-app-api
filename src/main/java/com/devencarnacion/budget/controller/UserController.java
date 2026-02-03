@@ -54,8 +54,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/expenses")
-    public ResponseEntity<List<ExpenseResponseDTO>> getExpensesByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(expenseService.getExpensesByUser(userId));
+    public ResponseEntity<List<ExpenseResponseDTO>> getExpensesByUserId() {
+        return ResponseEntity.ok(expenseService.getExpensesByUser());
     }
     
     @GetMapping("/{userId}/categories")

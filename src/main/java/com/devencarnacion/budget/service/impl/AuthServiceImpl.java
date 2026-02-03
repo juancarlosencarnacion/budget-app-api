@@ -3,7 +3,7 @@ package com.devencarnacion.budget.service.impl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+// import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,7 @@ import com.devencarnacion.budget.dto.auth.AuthResponse;
 import com.devencarnacion.budget.dto.auth.LoginRequest;
 import com.devencarnacion.budget.dto.auth.RegisterRequest;
 import com.devencarnacion.budget.enums.user.Role;
+import com.devencarnacion.budget.mapper.AuthMapper;
 import com.devencarnacion.budget.model.User;
 import com.devencarnacion.budget.repository.UserRepository;
 import com.devencarnacion.budget.service.AuthService;
@@ -26,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final AuthMapper authMapper;
 
     @Override
     public AuthResponse login(LoginRequest request) {
@@ -42,18 +44,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
-        User user = User.builder()
-            .username(request.getUsername())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .firstname(request.getFirstname())
-            .lastname(request.getLastname())
-            .role(Role.USER)
-            .build();
+        User newUser = authMapper.toEntity(request);
 
-        userRepository.save(user);
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setRole(Role.USER);
+
+        userRepository.save(newUser);
 
         return AuthResponse.builder()
-            .token(jwtService.getToken(user))
+            .token(jwtService.getToken(newUser))
             .build();
     }
 

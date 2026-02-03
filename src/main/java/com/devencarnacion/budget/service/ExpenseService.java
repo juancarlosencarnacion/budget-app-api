@@ -14,7 +14,7 @@ public interface ExpenseService {
 
     List<ExpenseResponseDTO> getAllForAdmin();
 
-    List<ExpenseResponseDTO> getExpensesByUser(Long userId);
+    List<ExpenseResponseDTO> getExpensesByUser();
 
     ExpenseResponseDTO getById(Long id);
 

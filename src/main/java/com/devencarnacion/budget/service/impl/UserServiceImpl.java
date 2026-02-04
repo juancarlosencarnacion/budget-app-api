@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    // private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDTO create(UserCreateRequestDTO request) {
@@ -53,8 +52,6 @@ public class UserServiceImpl implements UserService {
 
         userMapper.updateEntityFromDto(request, user);
         
-        // userRepository.save(user);
-
         return userMapper.toResponse(userRepository.save(user));
     }
 

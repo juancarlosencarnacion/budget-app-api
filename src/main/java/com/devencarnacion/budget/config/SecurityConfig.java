@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-	// private final AuthenticationProvider authProvider;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@Bean
@@ -28,14 +27,12 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf
 						.disable())
 				.exceptionHandling(ex -> ex
-					.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-				)
+						.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.authorizeHttpRequests(authRequest -> authRequest
 						.requestMatchers("/auth/**").permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(sessionManager -> sessionManager
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				// .authenticationProvider(authProvider)
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
 				.build();

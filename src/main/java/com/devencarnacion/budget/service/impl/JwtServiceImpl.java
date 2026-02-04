@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    // ! MOVE TO .ENV
-    private static final String SECRET_KEY = "Q2VxZ0tJZ0ZyZUxqRk1Yb3pNNU9zVnJQeE9aU0hCUnB4c0ZqT2lQb0R6cWZJbw==";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     @Override 
     public String getToken(UserDetails user) {
@@ -40,19 +41,19 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Key getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     @Override
-    public String getUsernameFromToken(String token) {
+    public String getSubjectFromToken(String token) {
         return getClaim(token, Claims::getSubject);
     }
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String email = getSubjectFromToken(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private Claims getAllClaims(String token) {

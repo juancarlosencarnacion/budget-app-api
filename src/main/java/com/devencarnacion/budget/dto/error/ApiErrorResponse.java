@@ -27,7 +27,5 @@ public class ApiErrorResponse {
         this.path = path;
         this.timestamp = LocalDateTime.now();
     }
-
-    // getters y setters
 }
 

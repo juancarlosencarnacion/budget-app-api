@@ -13,4 +13,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AuthResponse {
     String token;
+    String email;
 }

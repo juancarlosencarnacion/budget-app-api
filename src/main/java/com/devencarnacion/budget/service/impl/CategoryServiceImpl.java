@@ -11,7 +11,6 @@ import com.devencarnacion.budget.mapper.CategoryMapper;
 import com.devencarnacion.budget.model.Category;
 import com.devencarnacion.budget.model.User;
 import com.devencarnacion.budget.repository.CategoryRepository;
-// import com.devencarnacion.budget.repository.UserRepository;
 import com.devencarnacion.budget.service.CategoryService;
 import com.devencarnacion.budget.util.SecurityUtils;
 
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-    // private final UserRepository userRepository;
 
     private final CategoryMapper categoryMapper;
 

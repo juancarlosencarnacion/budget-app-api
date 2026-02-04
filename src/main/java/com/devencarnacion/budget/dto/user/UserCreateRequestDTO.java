@@ -27,7 +27,7 @@ public class UserCreateRequestDTO {
 
     @NotBlank(message = "Username is required")
     @Email(message = "Invalid email format")
-    private String username;
+    private String email;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")

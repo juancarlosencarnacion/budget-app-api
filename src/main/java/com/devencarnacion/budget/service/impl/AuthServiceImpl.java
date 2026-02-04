@@ -3,7 +3,6 @@ package com.devencarnacion.budget.service.impl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,7 @@ import com.devencarnacion.budget.enums.user.Role;
 import com.devencarnacion.budget.mapper.AuthMapper;
 import com.devencarnacion.budget.model.User;
 import com.devencarnacion.budget.repository.UserRepository;
+import com.devencarnacion.budget.security.UserPrincipal;
 import com.devencarnacion.budget.service.AuthService;
 import com.devencarnacion.budget.service.JwtService;
 
@@ -28,18 +28,21 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final AuthMapper authMapper;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        UserDetails user = userRepository.findByUsername(request.getUsername())
-            .orElseThrow();
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
 
-        String token = jwtService.getToken(user);
+        String token = jwtService.getToken(userDetails);
+
         return AuthResponse.builder()
-            .token(token)
-            .build();
+                .token(token)
+                .email(userDetails.getUsername())
+                .build();
     }
 
     @Override
@@ -49,11 +52,16 @@ public class AuthServiceImpl implements AuthService {
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         newUser.setRole(Role.USER);
 
-        userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
+
+        UserDetails userDetails = new UserPrincipal(savedUser);
+
+        String token = jwtService.getToken(userDetails);
 
         return AuthResponse.builder()
-            .token(jwtService.getToken(newUser))
-            .build();
+                .token(token)
+                .email(userDetails.getUsername())
+                .build();
     }
 
 }

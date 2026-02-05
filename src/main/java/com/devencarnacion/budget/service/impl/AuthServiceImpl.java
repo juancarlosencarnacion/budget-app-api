@@ -10,6 +10,7 @@ import com.devencarnacion.budget.dto.auth.AuthResponse;
 import com.devencarnacion.budget.dto.auth.LoginRequest;
 import com.devencarnacion.budget.dto.auth.RegisterRequest;
 import com.devencarnacion.budget.enums.user.Role;
+import com.devencarnacion.budget.exception.BadRequestException;
 import com.devencarnacion.budget.mapper.AuthMapper;
 import com.devencarnacion.budget.model.User;
 import com.devencarnacion.budget.repository.UserRepository;
@@ -47,6 +48,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
+
         User newUser = authMapper.toEntity(request);
 
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));

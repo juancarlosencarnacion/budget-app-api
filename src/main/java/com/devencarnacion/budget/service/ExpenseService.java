@@ -1,6 +1,8 @@
 package com.devencarnacion.budget.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.devencarnacion.budget.dto.expense.ExpenseCreateRequestDTO;
 import com.devencarnacion.budget.dto.expense.ExpenseResponseDTO;
@@ -21,4 +23,6 @@ public interface ExpenseService {
     ExpenseResponseDTO update(Long id, ExpenseUpdateRequestDTO request);
 
     void delete(Long id);
+
+    Map<LocalDate, List<ExpenseResponseDTO>> getRecordsByDate();
 }

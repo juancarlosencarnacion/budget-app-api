@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.coyote.BadRequestException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -49,10 +51,39 @@ public class GlobalExceptionHandler {
                 .body(new ApiError("BAD_REQUEST", ex.getMessage()));
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGeneral(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiError("INTERNAL_ERROR", "Unexpected error occurred"));
+    @ExceptionHandler(DuplicateCategoryException.class)
+    public ResponseEntity<ApiError> handleDuplicateCategory(DuplicateCategoryException ex) {
+
+        ApiError error = new ApiError(
+                "DUPLICATE_CATEGORY",
+                ex.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(error);
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex) {
+
+        Throwable cause = ex.getRootCause();
+
+        if (cause instanceof ConstraintViolationException constraintEx) {
+            String constraintName = constraintEx.getConstraintName();
+
+            if ("uk_category_name_user".equals(constraintName)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(new ApiError("DUPLICATE_CATEGORY", "Category already exists"));
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiError("DATA_INTEGRITY_ERROR", "Invalid data"));
+    }
+    // @ExceptionHandler(Exception.class)
+    // public ResponseEntity<ApiError> handleGeneral(Exception ex) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body(new ApiError("INTERNAL_ERROR", "Unexpected error occurred"));
+    // }
 
 }

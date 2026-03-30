@@ -1,6 +1,6 @@
 package com.devencarnacion.budget.enums.category;
 
-public enum CategoryType {
+public enum CategoryTypeEnum {
     FIXED,
     VARIABLE,
     SAVINGS,

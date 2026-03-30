@@ -29,6 +29,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException) throws IOException {
 
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
         String error = "UNAUTHORIZED";
         String message = authException.getMessage();
 

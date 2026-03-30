@@ -16,7 +16,7 @@ public interface ExpenseMapper {
 
     // Entity -> Response
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "categoryId", source = "category.id")
+    // @Mapping(target = "categoryId", source = "category.id")
     ExpenseResponseDTO toResponse(Expense expense);
 
     // Create DTO -> Entity

@@ -2,7 +2,7 @@ package com.devencarnacion.budget.dto.budgetSummary;
 
 import java.math.BigDecimal;
 
-import com.devencarnacion.budget.enums.category.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class BudgetSummaryDto {
 
     private Long categoryId;
     private String categoryName;
-    private CategoryType categoryType;
+    private CategoryTypeEnum categoryType;
 
     private BigDecimal budgetAssigned;
     private BigDecimal totalSpent;

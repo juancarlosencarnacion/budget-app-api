@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.devencarnacion.budget.dto.category.CategoryResponseDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +29,7 @@ public class ExpenseResponseDTO {
 
     private Long userId;
 
-    private Long categoryId;
+    private CategoryResponseDTO category;
     
     private LocalDateTime createdAt;
     

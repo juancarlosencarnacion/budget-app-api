@@ -3,7 +3,7 @@ package com.devencarnacion.budget.dto.category;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.devencarnacion.budget.enums.category.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,13 +22,14 @@ public class CategoryResponseDTO {
 
     private String name;
 
-    private CategoryType categoryType;
+    private CategoryTypeEnum categoryType;
 
     private BigDecimal monthlyBudget;
 
-    private Long userId;
+    // private Long userId;
 
-    private LocalDateTime createdAt;
+    // private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    // private LocalDateTime updatedAt;
 }
+ 

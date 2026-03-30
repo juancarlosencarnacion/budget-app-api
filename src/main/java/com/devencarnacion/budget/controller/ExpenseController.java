@@ -1,6 +1,8 @@
 package com.devencarnacion.budget.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +53,10 @@ public class ExpenseController {
     public ResponseEntity<Void> delete(@PathVariable Long expenseId) {
         expenseService.delete(expenseId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/recordsByDate")
+    public ResponseEntity<Map<LocalDate, List<ExpenseResponseDTO>>> getRecordsByDate(){
+        return ResponseEntity.ok(expenseService.getRecordsByDate());
     }
 }

@@ -14,7 +14,7 @@ import com.devencarnacion.budget.model.Expense;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
-    List<Expense> findExpensesByUserId(Long userId);
+    List<Expense> findByUserId(Long userId);
 
     Optional<Expense> findByIdAndUserId(Long id, Long userId);
 
@@ -38,5 +38,4 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             GROUP BY e.category.id
             """)
     List<BudgetSpentProjection> sumByUserGrouped(@Param("userId") Long userId);
-
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devencarnacion.budget.dto.category.CategoryResponseDTO;
 import com.devencarnacion.budget.dto.expense.ExpenseResponseDTO;
@@ -38,7 +39,11 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserCreateRequestDTO user) {
         UserResponseDTO response = userService.create(user);
 
-        URI location = URI.create("/api/v1/users/" + response.getId());
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.getId())
+                .toUri();
 
         return ResponseEntity.created(location).body(response);
     }
@@ -57,14 +62,15 @@ public class UserController {
     public ResponseEntity<List<ExpenseResponseDTO>> getExpensesByUserId() {
         return ResponseEntity.ok(expenseService.getExpensesByUser());
     }
-    
+
     @GetMapping("/{userId}/categories")
     public ResponseEntity<List<CategoryResponseDTO>> getCategoriesByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(categoryService.getCategoriesByUserId(userId));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@Valid @PathVariable Long id, @Valid @RequestBody UserUpdateRequestDTO request) {
+    public ResponseEntity<UserResponseDTO> updateUser(@Valid @PathVariable Long id,
+            @Valid @RequestBody UserUpdateRequestDTO request) {
         return ResponseEntity.ok(userService.update(id, request));
     }
 

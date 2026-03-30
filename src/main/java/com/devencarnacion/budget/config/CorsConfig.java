@@ -17,8 +17,11 @@ public class CorsConfig {
 
         // Permite cualquier origen (IP, dominio, devtunnels, ngrok, etc.)
         config.setAllowedOriginPatterns(List.of("*"));
-        
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // config.setAllowedOrigins(List.of(
+        //         "http://localhost:5173",
+        //         "https://87vnmxzg-8080.use2.devtunnels.ms"));
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
@@ -27,19 +30,4 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
-    //  @Bean
-    // public CorsConfigurationSource corsConfigurationSource() {
-    //     CorsConfiguration config = new CorsConfiguration();
-
-    //     config.setAllowedOrigins(List.of("http://localhost:5173"));
-    //     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    //     config.setAllowedHeaders(List.of("*"));
-    //     config.setAllowCredentials(true);
-
-    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-    //     source.registerCorsConfiguration("/**", config);
-    //     return source;
-    // }
 }

@@ -2,7 +2,7 @@ package com.devencarnacion.budget.dto.category;
 
 import java.math.BigDecimal;
 
-import com.devencarnacion.budget.enums.category.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,6 @@ import lombok.Setter;
 @Setter
 public class CategoryUpdateRequestDTO {
     private String name;
-    private CategoryType categoryType;
+    private CategoryTypeEnum categoryType;
     private BigDecimal monthlyBudget;
 }

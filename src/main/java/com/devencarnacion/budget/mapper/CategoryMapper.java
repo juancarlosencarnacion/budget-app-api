@@ -15,7 +15,6 @@ import com.devencarnacion.budget.model.Category;
 public interface CategoryMapper {
 
     // Entity -> Response
-    @Mapping(target = "userId", source = "user.id")
     CategoryResponseDTO toResponse(Category category);
 
     // Create DTO -> Entity

@@ -1,16 +1,34 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: budget-app
+    ports:
+      - "${APP_PORT}:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${SPRING_DATASOURCE_HOST}:${SPRING_DATASOURCE_PORT}/${SPRING_DATASOURCE_DB}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+
   db:
     image: postgres:16
     container_name: budgetappdb
-    restart: unless-stopped
-    environment:
+    restart: always
+    environment: 
+      POSTGRES_DB: ${SPRING_DATASOURCE_DB}
       POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      POSTGRES_DB: ${SPRING_DATASOURCE_DB}
-    ports: 
-      - "5432:5432"
     volumes:
-      - budgetapp_data:/var/lib/postgresql/data
+      - budgetapp_data_compose:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
-volumes: 
-  budgetapp_data:
+volumes:
+  budgetapp_data_compose:

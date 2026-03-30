@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.devencarnacion.budget.enums.category.CategoryType;
+import com.devencarnacion.budget.enums.category.CategoryTypeEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,13 +31,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(
-    name = "categories",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name", "user_id"})
-    }
-)
 @Builder
+@Table(name = "categories", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_category_name_user", columnNames = { "name", "user_id" })
+})
 public class Category {
 
     @Id
@@ -49,7 +46,7 @@ public class Category {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private CategoryType categoryType;
+    private CategoryTypeEnum categoryType;
 
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal monthlyBudget;

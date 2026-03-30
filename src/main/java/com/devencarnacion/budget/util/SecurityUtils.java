@@ -26,4 +26,8 @@ public class SecurityUtils {
 
         return userPrincipal.getUser();
     }
+
+    public Long getCurrentUserId() {
+        return getCurrentUser().getId();
+    }
 }

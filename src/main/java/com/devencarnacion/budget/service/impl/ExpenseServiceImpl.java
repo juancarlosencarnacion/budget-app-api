@@ -1,6 +1,9 @@
 package com.devencarnacion.budget.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +65,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<ExpenseResponseDTO> getExpensesByUser() {
         User user = securityUtils.getCurrentUser();
-        return expenseRepository.findExpensesByUserId(user.getId())
+        return expenseRepository.findByUserId(user.getId())
                 .stream()
                 .map(expenseMapper::toResponse)
                 .toList();
@@ -104,6 +107,13 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .orElseThrow(() -> new AccessDeniedException("You are not the owner of this expense"));
 
         expenseRepository.delete(expense);
+    }
+
+    public Map<LocalDate, List<ExpenseResponseDTO>> getRecordsByDate() {
+        return expenseRepository.findByUserId(securityUtils.getCurrentUserId())
+            .stream()
+            .map(expenseMapper::toResponse)
+            .collect(Collectors.groupingBy(ExpenseResponseDTO::getDate));
     }
 
 }

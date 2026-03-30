@@ -17,5 +17,5 @@ public class ExpenseUpdateRequestDTO {
     private BigDecimal amount;
     private LocalDate date;
     private Long categoryId;
-    private Long userId;
+    // private Long userId;
 }

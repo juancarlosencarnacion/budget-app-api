@@ -3,6 +3,7 @@ package com.devencarnacion.budget.service.impl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final AuthMapper authMapper;
     private final CustomUserDetailsService customUserDetailsService;
-
+ 
     @Override
     public AuthResponse login(LoginRequest request) {
         authenticationManager
@@ -38,11 +39,14 @@ public class AuthServiceImpl implements AuthService {
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
 
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + request.getEmail()));
+
         String token = jwtService.getToken(userDetails);
 
         return AuthResponse.builder()
                 .token(token)
-                .email(userDetails.getUsername())
+                .user(user)
                 .build();
     }
 
@@ -65,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
 
         return AuthResponse.builder()
                 .token(token)
-                .email(userDetails.getUsername())
+                .user(savedUser)
                 .build();
     }
 
